@@ -22,21 +22,5 @@ fun main() = runBlocking {
     shutdownSignal.await()
 }
 
-//    val server: Server = createServer()
-//    val stdioServerTransport = StdioServerTransport(
-//        System.`in`.asSource().buffered(),
-//        System.out.asSink().buffered()
-//    )
-//    val shutdownSignal = CompletableDeferred<Unit>()
-//    server.onCloseCallback = { shutdownSignal.complete(Unit) }
-//
-//    server.connect(stdioServerTransport)
-//    shutdownSignal.await()
-//    runBlocking {
-//        val job = Job()
-//        server.onCloseCallback = { job.complete() }
-//        server.connect(stdioServerTransport)
-//        job.join()
-//    }
 
 
