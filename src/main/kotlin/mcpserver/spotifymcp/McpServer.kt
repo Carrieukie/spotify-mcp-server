@@ -4,12 +4,10 @@ import io.modelcontextprotocol.kotlin.sdk.Implementation
 import io.modelcontextprotocol.kotlin.sdk.ServerCapabilities
 import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
-import mcpserver.spotifymcp.tools.addSpotifyPausePlaybackTool
-import mcpserver.spotifymcp.tools.addSpotifyPlayTool
-import mcpserver.spotifymcp.tools.addSpotifySearchTool
 import mcpserver.spotify.auth.tokenstorage.FileTokenStorageImpl
 import mcpserver.spotify.auth.authmanager.SpotifyTokenManagerImpl
 import mcpserver.spotify.services.playerservice.SpotifyPlayerServiceImpl
+import mcpserver.spotifymcp.tools.*
 import java.io.File
 
 fun createServer(): Server {
@@ -32,6 +30,8 @@ fun createServer(): Server {
     addSpotifyPlayTool(server, spotifyApi)
     addSpotifyPausePlaybackTool(server, spotifyApi)
     addSpotifySearchTool(server, spotifyApi)
+    addSpotifySkipToPrevTool(server, spotifyApi)
+    addSpotifySkipToNextTool(server, spotifyApi)
 
     return server
 }

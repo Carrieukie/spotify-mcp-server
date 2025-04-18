@@ -1,4 +1,4 @@
-package mcpserver.spotify.services.playerservice.model.response
+package mcpserver.spotify.services.playerservice.model
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName

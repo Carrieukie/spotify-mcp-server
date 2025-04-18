@@ -1,12 +1,12 @@
 package mcpserver.spotify.services.playerservice
 
-import mcpserver.spotify.services.playerservice.model.response.SpotifySearchResponse
+import mcpserver.spotify.services.playerservice.model.SpotifySearchResponse
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 import mcpserver.spotify.utils.networkutils.model.SpotifyApiError
 
 interface SpotifyPlayerService {
     suspend fun playTrack(trackUris: List<String> = listOf()): SpotifyResult<String, SpotifyApiError>
-    suspend fun pausePlayback(): SpotifyResult<String,SpotifyApiError>
+    suspend fun pausePlayback(): SpotifyResult<String, SpotifyApiError>
     suspend fun search(
         query: String,
         type: String,
@@ -15,4 +15,11 @@ interface SpotifyPlayerService {
         market: String? = null,
         includeExternal: String? = null
     ): SpotifyResult<SpotifySearchResponse, SpotifyApiError>
+
+    suspend fun skipToNextTrack(): SpotifyResult<String, SpotifyApiError>
+    suspend fun skipToPreviousTrack(): SpotifyResult<String, SpotifyApiError>
+    suspend fun seekToPosition(positionMs: Int): SpotifyResult<String, SpotifyApiError>
+    suspend fun setRepeatMode(state: String): SpotifyResult<String, SpotifyApiError>
+    suspend fun setVolume(volumePercent: Int): SpotifyResult<String, SpotifyApiError>
+    suspend fun getQueue(): SpotifyResult<String, SpotifyApiError>
 }

@@ -5,7 +5,7 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import mcpserver.spotify.auth.authmanager.SpotifyTokenManager
-import mcpserver.spotify.services.playerservice.model.response.SpotifySearchResponse
+import mcpserver.spotify.services.playerservice.model.SpotifySearchResponse
 import mcpserver.spotify.utils.getHttpClient
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 import mcpserver.spotify.utils.networkutils.model.SpotifyAccountsError
@@ -103,7 +103,7 @@ class SpotifyPlayerServiceImpl(
         }
     }
 
-    suspend fun skipToNextTrack(): SpotifyResult<String, SpotifyApiError> {
+    override suspend fun skipToNextTrack(): SpotifyResult<String, SpotifyApiError> {
         return when (val tokenResult = tokenManager.getValidAccessToken()) {
             is SpotifyResult.Failure -> SpotifyResult.Failure(
                 SpotifyApiError(
@@ -125,7 +125,7 @@ class SpotifyPlayerServiceImpl(
         }
     }
 
-    suspend fun skipToPreviousTrack(): SpotifyResult<String, SpotifyApiError> {
+    override suspend fun skipToPreviousTrack(): SpotifyResult<String, SpotifyApiError> {
         return when (val tokenResult = tokenManager.getValidAccessToken()) {
             is SpotifyResult.Failure -> SpotifyResult.Failure(
                 SpotifyApiError(
@@ -147,7 +147,7 @@ class SpotifyPlayerServiceImpl(
         }
     }
 
-    suspend fun seekToPosition(positionMs: Int): SpotifyResult<String, SpotifyApiError> {
+    override suspend fun seekToPosition(positionMs: Int): SpotifyResult<String, SpotifyApiError> {
         return when (val tokenResult = tokenManager.getValidAccessToken()) {
             is SpotifyResult.Failure -> SpotifyResult.Failure(
                 SpotifyApiError(
@@ -169,7 +169,7 @@ class SpotifyPlayerServiceImpl(
         }
     }
 
-    suspend fun setRepeatMode(state: String): SpotifyResult<String, SpotifyApiError> {
+    override suspend fun setRepeatMode(state: String): SpotifyResult<String, SpotifyApiError> {
         return when (val tokenResult = tokenManager.getValidAccessToken()) {
             is SpotifyResult.Failure -> SpotifyResult.Failure(
                 SpotifyApiError(
@@ -191,7 +191,7 @@ class SpotifyPlayerServiceImpl(
         }
     }
 
-    suspend fun setVolume(volumePercent: Int): SpotifyResult<String, SpotifyApiError> {
+    override suspend fun setVolume(volumePercent: Int): SpotifyResult<String, SpotifyApiError> {
         return when (val tokenResult = tokenManager.getValidAccessToken()) {
             is SpotifyResult.Failure -> SpotifyResult.Failure(
                 SpotifyApiError(
@@ -213,7 +213,7 @@ class SpotifyPlayerServiceImpl(
         }
     }
 
-    suspend fun getQueue(): SpotifyResult<String, SpotifyApiError> {
+    override suspend fun getQueue(): SpotifyResult<String, SpotifyApiError> {
         return when (val tokenResult = tokenManager.getValidAccessToken()) {
             is SpotifyResult.Failure -> SpotifyResult.Failure(
                 SpotifyApiError(
