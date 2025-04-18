@@ -1,4 +1,4 @@
-package mcpserver.spotify.authstuff.spotifytokenmanager
+package mcpserver.spotify.authstuff.authmanager
 
 import com.sun.net.httpserver.HttpServer
 import io.github.cdimascio.dotenv.dotenv
@@ -9,9 +9,9 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
-import mcpserver.spotify.authstuff.filetokenstorage.FileTokenStorageImpl
-import mcpserver.spotify.authstuff.filetokenstorage.model.TokenData
-import mcpserver.spotify.authstuff.spotifytokenmanager.model.RefreshTokenResponse
+import mcpserver.spotify.authstuff.tokenstorage.FileTokenStorageImpl
+import mcpserver.spotify.authstuff.tokenstorage.model.TokenData
+import mcpserver.spotify.authstuff.authmanager.model.RefreshTokenResponse
 import mcpserver.spotify.utils.getHttpClient
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 import mcpserver.spotify.utils.networkutils.model.SpotifyAccountsError
@@ -118,7 +118,10 @@ class SpotifyTokenManagerImpl(
     private fun generateSpotifyAuthUrl(): String {
         val scopes = listOf(
             "user-modify-playback-state",
-            "user-read-playback-state"
+            "user-read-playback-state",
+            "user-read-recently-played",
+            "user-read-currently-playing",
+            "user-modify-playback-state"
         ).joinToString(" ")
 
         return URLBuilder("$SPOTIFY_ACCOUNTS_BASE_URL/authorize").apply {

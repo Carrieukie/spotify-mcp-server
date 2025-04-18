@@ -1,4 +1,4 @@
-package mcpserver.spotify.authstuff.filetokenstorage.model
+package mcpserver.spotify.authstuff.tokenstorage.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

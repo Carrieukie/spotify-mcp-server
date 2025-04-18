@@ -1,10 +1,10 @@
-package mcpserver.spotify.spotifyapi
+package mcpserver.spotify.api.playerservice
 
-import mcpserver.spotify.spotifyapi.model.response.SpotifySearchResponse
+import mcpserver.spotify.api.playerservice.model.response.SpotifySearchResponse
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 import mcpserver.spotify.utils.networkutils.model.SpotifyApiError
 
-interface SpotifyApi {
+interface SpotifyPlayerService {
     suspend fun playTrack(trackUris: List<String> = listOf()): SpotifyResult<String, SpotifyApiError>
     suspend fun pausePlayback(): SpotifyResult<String,SpotifyApiError>
     suspend fun search(

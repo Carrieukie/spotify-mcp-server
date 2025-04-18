@@ -1,4 +1,4 @@
-package mcpserver.spotify.authstuff.spotifytokenmanager
+package mcpserver.spotify.authstuff.authmanager
 
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 import mcpserver.spotify.utils.networkutils.model.SpotifyAccountsError
