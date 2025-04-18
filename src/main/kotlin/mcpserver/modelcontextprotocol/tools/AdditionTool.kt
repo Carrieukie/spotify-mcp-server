@@ -15,8 +15,8 @@ fun addAdditionTool(server: Server) {
         description = "Add two numbers",
         inputSchema = Tool.Input(
             buildJsonObject {
-                put("a", "number")
-                put("b", "number")
+                put("a", buildJsonObject { put("type", "number") })
+                put("b", buildJsonObject { put("type", "number") })
             }
         )
     ) { input ->
