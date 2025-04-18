@@ -1,6 +1,6 @@
-package mcpserver.spotify.authstuff.tokenstorage
+package mcpserver.spotify.auth.tokenstorage
 
-import mcpserver.spotify.authstuff.tokenstorage.model.TokenData
+import mcpserver.spotify.auth.tokenstorage.model.TokenData
 
 interface TokenStorage {
     fun saveTokens(tokenData: TokenData)

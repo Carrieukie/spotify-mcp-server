@@ -1,7 +1,7 @@
-package mcpserver.spotify.authstuff.tokenstorage
+package mcpserver.spotify.auth.tokenstorage
 
 import kotlinx.serialization.json.Json
-import mcpserver.spotify.authstuff.tokenstorage.model.TokenData
+import mcpserver.spotify.auth.tokenstorage.model.TokenData
 import java.io.File
 
 /**

@@ -7,16 +7,16 @@ import kotlinx.io.asSink
 import kotlinx.io.asSource
 import kotlinx.io.buffered
 import mcpserver.spotifymcp.createServer
-import mcpserver.spotify.authstuff.filetokenstorage.FileTokenStorageImpl
-import mcpserver.spotify.authstuff.spotifytokenmanager.SpotifyTokenManagerImpl
-import mcpserver.spotify.spotifyapi.SpotifyApiImpl
+import mcpserver.spotify.auth.tokenstorage.FileTokenStorageImpl
+import mcpserver.spotify.auth.authmanager.SpotifyTokenManagerImpl
+import mcpserver.spotify.services.playerservice.SpotifyPlayerServiceImpl
 import java.io.File
 
 // Setup Spotify API
 val tokenManager = SpotifyTokenManagerImpl(
     tokenStorage = FileTokenStorageImpl(File("tokens.json"))
 )
-val spotifyApi = SpotifyApiImpl(tokenManager = tokenManager)
+val spotifyApi = SpotifyPlayerServiceImpl(tokenManager = tokenManager)
 
 
 suspend fun main()   {

@@ -5,10 +5,10 @@ import io.modelcontextprotocol.kotlin.sdk.TextContent
 import io.modelcontextprotocol.kotlin.sdk.Tool
 import io.modelcontextprotocol.kotlin.sdk.server.Server
 import kotlinx.serialization.json.*
-import mcpserver.spotify.spotifyapi.SpotifyApi
+import mcpserver.spotify.services.playerservice.SpotifyPlayerService
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 
-fun addSpotifySearchTool(server: Server, spotifyApi: SpotifyApi) {
+fun addSpotifySearchTool(server: Server, spotifyPlayerService: SpotifyPlayerService) {
     val toolDescription = """
     Searches Spotify for music or audio content based on a keyword, phrase, or lyrics.
 
@@ -87,7 +87,7 @@ fun addSpotifySearchTool(server: Server, spotifyApi: SpotifyApi) {
         val offset = args["offset"]?.jsonPrimitive?.intOrNull ?: 0
         val includeExternal = args["include_external"]?.jsonPrimitive?.content
 
-        val result = when (val res = spotifyApi.search(
+        val result = when (val res = spotifyPlayerService.search(
             query = query,
             type = type,
             market = market,

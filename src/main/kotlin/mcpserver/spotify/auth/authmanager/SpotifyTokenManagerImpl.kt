@@ -1,4 +1,4 @@
-package mcpserver.spotify.authstuff.authmanager
+package mcpserver.spotify.auth.authmanager
 
 import com.sun.net.httpserver.HttpServer
 import io.github.cdimascio.dotenv.dotenv
@@ -9,9 +9,9 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
-import mcpserver.spotify.authstuff.tokenstorage.FileTokenStorageImpl
-import mcpserver.spotify.authstuff.tokenstorage.model.TokenData
-import mcpserver.spotify.authstuff.authmanager.model.RefreshTokenResponse
+import mcpserver.spotify.auth.tokenstorage.FileTokenStorageImpl
+import mcpserver.spotify.auth.tokenstorage.model.TokenData
+import mcpserver.spotify.auth.authmanager.model.RefreshTokenResponse
 import mcpserver.spotify.utils.getHttpClient
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 import mcpserver.spotify.utils.networkutils.model.SpotifyAccountsError

@@ -3,10 +3,10 @@ package mcpserver.spotifymcp.tools
 import io.modelcontextprotocol.kotlin.sdk.CallToolResult
 import io.modelcontextprotocol.kotlin.sdk.TextContent
 import io.modelcontextprotocol.kotlin.sdk.server.Server
-import mcpserver.spotify.spotifyapi.SpotifyApi
+import mcpserver.spotify.services.playerservice.SpotifyPlayerService
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 
-fun addSpotifyPausePlaybackTool(server: Server, spotifyApi: SpotifyApi) {
+fun addSpotifyPausePlaybackTool(server: Server, spotifyPlayerService: SpotifyPlayerService) {
     val toolDescription = """
         Pauses the currently playing track on Spotify.
         
@@ -23,7 +23,7 @@ fun addSpotifyPausePlaybackTool(server: Server, spotifyApi: SpotifyApi) {
         name = "pause-spotify",
         description = toolDescription
     ) {
-        val result = when (val res = spotifyApi.pausePlayback()) {
+        val result = when (val res = spotifyPlayerService.pausePlayback()) {
             is SpotifyResult.Failure -> {
                 val errorMessage = "Something went wrong: ${res.exception}"
                 println("Error: $errorMessage")

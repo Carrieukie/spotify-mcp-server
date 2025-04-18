@@ -1,11 +1,11 @@
-package mcpserver.spotify.api.playerservice
+package mcpserver.spotify.services.playerservice
 
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import mcpserver.spotify.auth.authmanager.SpotifyTokenManager
-import mcpserver.spotify.api.playerservice.model.response.SpotifySearchResponse
+import mcpserver.spotify.services.playerservice.model.response.SpotifySearchResponse
 import mcpserver.spotify.utils.getHttpClient
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 import mcpserver.spotify.utils.networkutils.model.SpotifyAccountsError

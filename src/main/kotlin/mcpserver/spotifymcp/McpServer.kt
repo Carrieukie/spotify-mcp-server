@@ -7,9 +7,9 @@ import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
 import mcpserver.spotifymcp.tools.addSpotifyPausePlaybackTool
 import mcpserver.spotifymcp.tools.addSpotifyPlayTool
 import mcpserver.spotifymcp.tools.addSpotifySearchTool
-import mcpserver.spotify.authstuff.filetokenstorage.FileTokenStorageImpl
-import mcpserver.spotify.authstuff.spotifytokenmanager.SpotifyTokenManagerImpl
-import mcpserver.spotify.spotifyapi.SpotifyApiImpl
+import mcpserver.spotify.auth.tokenstorage.FileTokenStorageImpl
+import mcpserver.spotify.auth.authmanager.SpotifyTokenManagerImpl
+import mcpserver.spotify.services.playerservice.SpotifyPlayerServiceImpl
 import java.io.File
 
 fun createServer(): Server {
@@ -26,7 +26,7 @@ fun createServer(): Server {
     val tokenManager = SpotifyTokenManagerImpl(
         tokenStorage = FileTokenStorageImpl(File("tokens.json"))
     )
-    val spotifyApi = SpotifyApiImpl(tokenManager =tokenManager)
+    val spotifyApi = SpotifyPlayerServiceImpl(tokenManager =tokenManager)
 
     // Register tools
     addSpotifyPlayTool(server, spotifyApi)

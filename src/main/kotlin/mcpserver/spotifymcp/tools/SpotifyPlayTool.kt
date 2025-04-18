@@ -10,10 +10,10 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
-import mcpserver.spotify.spotifyapi.SpotifyApi
+import mcpserver.spotify.services.playerservice.SpotifyPlayerService
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 
-fun addSpotifyPlayTool(server: Server, spotifyApi: SpotifyApi) {
+fun addSpotifyPlayTool(server: Server, spotifyPlayerService: SpotifyPlayerService) {
     val toolDescription = """
         Plays one or more Spotify tracks using their Spotify track URIs.
 
@@ -51,7 +51,7 @@ fun addSpotifyPlayTool(server: Server, spotifyApi: SpotifyApi) {
     ) { input ->
         val songs = Json.decodeFromString<TrackUriPayload>(input.arguments.toString()).trackUri
 
-        val result = when (val res = spotifyApi.playTrack(songs)) {
+        val result = when (val res = spotifyPlayerService.playTrack(songs)) {
             is SpotifyResult.Failure -> {
                 val errorMessage = "Something went wrong: ${res.exception}"
                 println("Error: $errorMessage")

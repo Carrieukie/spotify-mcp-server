@@ -1,6 +1,6 @@
-package mcpserver.spotify.api.playerservice
+package mcpserver.spotify.services.playerservice
 
-import mcpserver.spotify.api.playerservice.model.response.SpotifySearchResponse
+import mcpserver.spotify.services.playerservice.model.response.SpotifySearchResponse
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 import mcpserver.spotify.utils.networkutils.model.SpotifyApiError
 
