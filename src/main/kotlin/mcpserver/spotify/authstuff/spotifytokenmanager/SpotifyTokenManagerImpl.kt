@@ -28,6 +28,11 @@ class SpotifyTokenManagerImpl(
     private val clientId: String = dotenv()["SPOTIFY_CLIENT_ID"] ?: "",
     private val clientSecret: String = dotenv()["SPOTIFY_CLIENT_SECRET"] ?: "",
 ) : SpotifyTokenManager {
+    init {
+        if (clientId.isEmpty() || clientSecret.isEmpty()) {
+            throw IllegalArgumentException("Spotify Client ID and Secret must be provided.")
+        }
+    }
     override suspend fun getValidAccessToken(): SpotifyResult<String, SpotifyAccountsError> {
         return safeSpotifyApiCall<String, SpotifyAccountsError> {
             val currentToken = tokenStorage.getTokens()?.accessToken
@@ -139,13 +144,9 @@ class SpotifyTokenManagerImpl(
             }
             Runtime.getRuntime().exec(command)
         } catch (e: Exception) {
-            println("❌ Failed to open browser: ${e.message}")
             throw RuntimeException("❌ Failed to open browser. Please visit the following URL manually: $url", e)
 
-//            throw IllegalStateException(
-//                message = "❌ Failed to open browser. Please visit the following URL manually: $url",
-//                cause = e
-//            )
+
         }
     }
 

@@ -5,6 +5,7 @@ import io.modelcontextprotocol.kotlin.sdk.ServerCapabilities
 import io.modelcontextprotocol.kotlin.sdk.server.Server
 import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
 import mcpserver.modelcontextprotocol.tools.addAdditionTool
+import mcpserver.modelcontextprotocol.tools.addSpotifyPausePlaybackTool
 import mcpserver.modelcontextprotocol.tools.addSpotifyPlayTool
 import mcpserver.spotify.authstuff.filetokenstorage.FileTokenStorageImpl
 import mcpserver.spotify.authstuff.spotifytokenmanager.SpotifyTokenManagerImpl
@@ -30,6 +31,7 @@ fun createServer(): Server {
     // Register tools
     addAdditionTool(server)
     addSpotifyPlayTool(server, spotifyApi)
+    addSpotifyPausePlaybackTool(server, spotifyApi)
 
     return server
 }
