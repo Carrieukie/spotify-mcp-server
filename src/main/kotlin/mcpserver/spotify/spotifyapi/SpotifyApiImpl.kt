@@ -36,7 +36,7 @@ class SpotifyApiImpl(
                             append(HttpHeaders.Authorization, "Bearer ${accessToken.data}")
                             append(HttpHeaders.ContentType, "application/json")
                         }
-                        if (trackUris.isEmpty()) {
+                        if (trackUris.isNotEmpty()) {
                             setBody(mapOf("uris" to trackUris))
                         }
                     }.body<String>()
@@ -68,10 +68,13 @@ class SpotifyApiImpl(
         }
     }
 
-    override suspend fun searchForTrack(
+    override suspend fun search(
         query: String,
         type: String,
-        limit: Int
+        limit: Int,
+        offset: Int,
+        market: String?,
+        includeExternal: String?
     ): SpotifyResult<SpotifySearchResponse, SpotifyApiError> {
         return when (val tokenResult = tokenManager.getValidAccessToken()) {
             is SpotifyResult.Failure -> SpotifyResult.Failure(
@@ -92,10 +95,14 @@ class SpotifyApiImpl(
                     parameter("q", query)
                     parameter("type", type)
                     parameter("limit", limit)
+                    parameter("offset", offset)
+                    market?.let { parameter("market", it) }
+                    includeExternal?.let { parameter("include_external", it) }
                 }.body()
             }
         }
     }
+
 }
 
 

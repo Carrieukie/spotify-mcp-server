@@ -7,9 +7,12 @@ import mcpserver.spotify.utils.networkutils.model.SpotifyApiError
 interface SpotifyApi {
     suspend fun playTrack(trackUris: List<String> = listOf()): SpotifyResult<String, SpotifyApiError>
     suspend fun pausePlayback(): SpotifyResult<String,SpotifyApiError>
-    suspend fun searchForTrack(
+    suspend fun search(
         query: String,
-        type: String = "track",
-        limit: Int = 10
+        type: String,
+        limit: Int = 20,
+        offset: Int = 0,
+        market: String? = null,
+        includeExternal: String? = null
     ): SpotifyResult<SpotifySearchResponse, SpotifyApiError>
 }

@@ -61,15 +61,12 @@ class SpotifyTokenManagerImpl(
     }
 
     private suspend fun authenticate(): TokenData = suspendCoroutine { continuation ->
-        println("🔐 Opening browser for Spotify login...")
-
         startHttpServerForCode { code ->
             // Resume the coroutine once tokens are fetched
             runBlocking {
                 try {
                     val tokenData = exchangeCodeForTokens(code)
                     tokenStorage.saveTokens(tokenData)
-                    println("✅ Authentication complete")
                     continuation.resume(tokenData)
                 } catch (e: Exception) {
                     continuation.resumeWithException(e)

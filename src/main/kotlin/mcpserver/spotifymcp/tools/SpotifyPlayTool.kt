@@ -4,7 +4,12 @@ import io.modelcontextprotocol.kotlin.sdk.CallToolResult
 import io.modelcontextprotocol.kotlin.sdk.TextContent
 import io.modelcontextprotocol.kotlin.sdk.Tool
 import io.modelcontextprotocol.kotlin.sdk.server.Server
-import kotlinx.serialization.json.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonObject
 import mcpserver.spotify.spotifyapi.SpotifyApi
 import mcpserver.spotify.utils.networkutils.SpotifyResult
 
@@ -44,10 +49,7 @@ fun addSpotifyPlayTool(server: Server, spotifyApi: SpotifyApi) {
         description = toolDescription,
         inputSchema = inputSchema
     ) { input ->
-        val songs: List<String> = input.arguments["trackUri"]
-            ?.jsonArray
-            ?.map { it.jsonPrimitive.content }
-            ?: emptyList()
+        val songs = Json.decodeFromString<TrackUriPayload>(input.arguments.toString()).trackUri
 
         val result = when (val res = spotifyApi.playTrack(songs)) {
             is SpotifyResult.Failure -> {
@@ -57,7 +59,7 @@ fun addSpotifyPlayTool(server: Server, spotifyApi: SpotifyApi) {
             }
 
             is SpotifyResult.Success -> {
-                val successMessage = "Successfully paused track: ${res.data}"
+                val successMessage = "Successfully played the track: ${res.data}"
                 println("Success: $successMessage")
                 successMessage
             }
@@ -66,3 +68,9 @@ fun addSpotifyPlayTool(server: Server, spotifyApi: SpotifyApi) {
     }
 }
 
+@Serializable
+data class TrackUriPayload(
+
+    @SerialName("trackUri")
+    val trackUri: List<String> = listOf()
+)

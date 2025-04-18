@@ -19,9 +19,13 @@ val tokenManager = SpotifyTokenManagerImpl(
 val spotifyApi = SpotifyApiImpl(tokenManager = tokenManager)
 
 
-fun main() {
-//    spotifyApi.playTrack("spotify:track:4iV5Isq9F8w0m2y8v3n1g7") // Example track URI
-
+suspend fun main()   {
+//    spotifyApi.playTrack(
+//        listOf(
+////            "spotify:track:3eNZcLsKbLIAFJRKiVrerK",
+////            "spotify:track:0jV229QHtkNuYxC3gFD8Vg"
+//        )
+//    )
     runBlocking {
         val server = createServer()
         val transport = StdioServerTransport(
