@@ -31,7 +31,7 @@ fun addSpotifyPausePlaybackTool(server: Server, spotifyPlayerService: SpotifyPla
             }
 
             is SpotifyResult.Success -> {
-                val successMessage = "Playing track: ${res.data}"
+                val successMessage = "Paused track: ${res.data}"
                 println("Success: $successMessage")
                 successMessage
             }
