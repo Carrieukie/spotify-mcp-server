@@ -22,32 +22,49 @@ import mcpserver.spotify.utils.networkutils.SpotifyResult
 
 fun addSpotifyPlayTool(server: Server, spotifyPlayerService: SpotifyPlayerService) {
     val toolDescription = """
-        Plays Spotify content (tracks, albums, playlists) using Spotify URIs.
+    Starts or resumes playback of Spotify content (tracks, albums, playlists) on the user's active or specified device.
 
-        Use this tool when the user wants to listen to specific tracks, albums, or playlists and you have their Spotify URIs. If the user didn't provide URIs directly, use the `search-spotify` tool first to find them.
+    It supports:
+    - Starting playback of specific tracks (`trackUri`)
+    - Playing a full album, artist, or playlist (`contextUri`)
+    - Resuming playback from the user's last session (no content input)
 
-        Input:
-        - `trackUri` (optional): A list of Spotify track URIs to play. Use this when playing individual tracks.
-        - `contextUri` (optional): A Spotify URI for an album, artist, or playlist. Use this when playing an entire album or playlist.
-        - `offset` (optional): Indicates from where in the context playback should start. Can specify either a position (integer) or a URI.
-        - `positionMs` (optional): Position in milliseconds to start playback from.
-        - `deviceId` (optional): The ID of the device to play on. If not provided, the user's currently active device is used.
+    Use this tool when the user expresses a desire to play or resume something, and you have valid Spotify URIs. 
+    If URIs are not provided, use the `search-spotify` tool first to locate the desired content.
+    If the user simply says "resume" or "continue," call this tool with an empty body ie {} .
 
-        Only valid Spotify URIs should be provided. Do not attempt to search for songs or convert text to URIs using this tool — use a separate search tool for that.
+    Input Parameters:
+    - `trackUri` (optional): A list of Spotify track URIs to play. Cannot be used with `contextUri`.
+    - `contextUri` (optional): A Spotify URI representing an album, artist, or playlist. Cannot be used with `trackUri`.
+    - `offset` (optional): Starting point within the context.
+        - `"position"` (integer): 0-based index of the item in the context.
+        - `"uri"` (string): URI of the track within the context to begin playback from.
+    - `positionMs` (optional): Starting position in milliseconds within the first track.
+    - `deviceId` (optional): Spotify device ID to target. If omitted, playback starts on the user’s currently active device.
 
-        Examples:
-        - Play a single track:
-          { "trackUri": ["spotify:track:7GhIk7Il098yCjg4BQjzvb"] }
+    Notes:
+    - Only valid Spotify URIs should be provided.
+    - Do not use this tool to perform search or natural language interpretation — use a search tool instead.
+    - To resume playback, omit `trackUri` and `contextUri`.
 
-        - Play multiple tracks:
-          { "trackUri": ["spotify:track:7GhIk7Il098yCjg4BQjzvb", "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp"] }
+    Examples:
+    - Resume playback on the current active device when no input is provided:
+      { }
+    - Play a single track:
+      { "trackUri": ["spotify:track:7GhIk7Il098yCjg4BQjzvb"] }
 
-        - Play an album starting from a specific track:
-          { "contextUri": "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr", "offset": {"position": 5}, "positionMs": 0 }
+    - Play multiple tracks:
+      { "trackUri": ["spotify:track:7GhIk7Il098yCjg4BQjzvb", "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp"] }
 
-        - Play a playlist starting from a specific track:
-          { "contextUri": "spotify:playlist:37i9dQZF1DX4sWSpwq3LiO", "offset": {"uri": "spotify:track:1301WleyT98MSxVHPZCA6M"} }
-        """.trimIndent()
+    - Play an album from the 6th track:
+      { "contextUri": "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr", "offset": {"position": 5} }
+
+    - Play a playlist from a specific track:
+      { "contextUri": "spotify:playlist:37i9dQZF1DX4sWSpwq3LiO", "offset": {"uri": "spotify:track:1301WleyT98MSxVHPZCA6M"} }
+
+    Reference: https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback
+""".trimIndent()
+
 
     val inputSchema = Tool.Input(
         properties = buildJsonObject {
