@@ -13,17 +13,24 @@ import mcpserver.spotify.utils.networkutils.SpotifyResult
  */
 fun addGetUserProfileTool(server: Server, spotifyUserService: SpotifyUserService) {
     val toolDescription = """
-    Retrieves the current user's Spotify profile information using the Spotify Web API.
+        Retrieves the current user's Spotify profile information via the Spotify Web API.
 
-    This includes:
-    - Display name
-    - User ID
-    - Number of followers
-    - Spotify URI
+        This includes:
+        - Display name
+        - User ID
+        - Number of followers
+        - Spotify URI
 
-    The User ID can be used to access additional user-related resources such as public playlists, 
-    as specified in the Spotify Web API documentation
-""".trimIndent()
+        The retrieved User ID can be used to:
+        - Access the user's public playlists (e.g., via `GET /users/{user_id}/playlists`)
+        - Reference the user in collaborative playlist endpoints
+        - Display profile links using their Spotify URI
+
+        Use this tool when you need to identify the current user, personalize responses, 
+        or retrieve their content, such as playlists or followers.
+
+        Reference: https://developer.spotify.com/documentation/web-api/reference/get-current-users-profile
+    """.trimIndent()
 
     val inputSchema = Tool.Input(
         properties = buildJsonObject {

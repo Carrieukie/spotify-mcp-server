@@ -8,7 +8,6 @@ interface SpotifyPlayerService {
     suspend fun playTrack(
         trackUris: List<String> = listOf(),
         contextUri: String? = null,
-        offset: Map<String, Any>? = null,
         positionMs: Int? = null,
         deviceId: String? = null
     ): SpotifyResult<String, SpotifyApiError>

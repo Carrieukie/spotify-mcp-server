@@ -34,7 +34,6 @@ class SpotifyPlayerServiceImpl(
     override suspend fun playTrack(
         trackUris: List<String>,
         contextUri: String?,
-        offset: Map<String, Any>?,
         positionMs: Int?,
         deviceId: String?
     ): SpotifyResult<String, SpotifyApiError> {
@@ -68,12 +67,6 @@ class SpotifyPlayerServiceImpl(
                         val requestBody = PlayRequestBody(
                             uris = if (trackUris.isNotEmpty()) trackUris else null,
                             context_uri = contextUri,
-                            offset = if (offset != null) {
-                                // Convert the offset map to a PlayRequestOffset object
-                                val position = offset["position"] as? Int
-                                val uri = offset["uri"] as? String
-                                PlayRequestOffset(position = position, uri = uri)
-                            } else null,
                             position_ms = positionMs
                         )
 

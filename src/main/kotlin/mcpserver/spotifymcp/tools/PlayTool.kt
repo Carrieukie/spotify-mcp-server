@@ -36,9 +36,6 @@ fun addSpotifyPlayTool(server: Server, spotifyPlayerService: SpotifyPlayerServic
     Input Parameters:
     - `trackUri` (optional): A list of Spotify track URIs to play. Cannot be used with `contextUri`.
     - `contextUri` (optional): A Spotify URI representing an album, artist, or playlist. Cannot be used with `trackUri`.
-    - `offset` (optional): Starting point within the context.
-        - `"position"` (integer): 0-based index of the item in the context.
-        - `"uri"` (string): URI of the track within the context to begin playback from.
     - `positionMs` (optional): Starting position in milliseconds within the first track.
     - `deviceId` (optional): Spotify device ID to target. If omitted, playback starts on the user’s currently active device.
 
@@ -57,10 +54,10 @@ fun addSpotifyPlayTool(server: Server, spotifyPlayerService: SpotifyPlayerServic
       { "trackUri": ["spotify:track:7GhIk7Il098yCjg4BQjzvb", "spotify:track:3n3Ppam7vgaVa1iaRUc9Lp"] }
 
     - Play an album from the 6th track:
-      { "contextUri": "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr", "offset": {"position": 5} }
+      { "contextUri": "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr" }
 
     - Play a playlist from a specific track:
-      { "contextUri": "spotify:playlist:37i9dQZF1DX4sWSpwq3LiO", "offset": {"uri": "spotify:track:1301WleyT98MSxVHPZCA6M"} }
+      { "contextUri": "spotify:playlist:37i9dQZF1DX4sWSpwq3LiO" }
 
     Reference: https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback
 """.trimIndent()
@@ -78,10 +75,6 @@ fun addSpotifyPlayTool(server: Server, spotifyPlayerService: SpotifyPlayerServic
             put("contextUri", buildJsonObject {
                 put("type", "string")
                 put("description", "A Spotify URI for an album, artist, or playlist. Use this when playing an entire album or playlist.")
-            })
-            put("offset", buildJsonObject {
-                put("type", "object")
-                put("description", "Indicates from where in the context playback should start. Can specify either a position (integer) or a URI.")
             })
             put("positionMs", buildJsonObject {
                 put("type", "integer")
@@ -101,15 +94,10 @@ fun addSpotifyPlayTool(server: Server, spotifyPlayerService: SpotifyPlayerServic
     ) { input ->
         val payload = Json.decodeFromString<TrackUriPayload>(input.arguments.toString())
 
-        // Convert JsonObject to Map<String, Any> if offset is provided
-        val offsetMap = payload.offset?.let { jsonObject ->
-            jsonObject.toMap()
-        }
 
         val result = when (val res = spotifyPlayerService.playTrack(
             trackUris = payload.trackUri,
             contextUri = payload.contextUri,
-            offset = offsetMap,
             positionMs = payload.positionMs,
             deviceId = payload.deviceId
         )) {
@@ -142,9 +130,6 @@ data class TrackUriPayload(
 
     @SerialName("contextUri")
     val contextUri: String? = null,
-
-    @SerialName("offset")
-    val offset: JsonObject? = null,
 
     @SerialName("positionMs")
     val positionMs: Int? = null,
