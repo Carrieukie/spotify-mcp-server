@@ -7,6 +7,8 @@ import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
 import mcpserver.spotify.auth.tokenstorage.FileTokenStorageImpl
 import mcpserver.spotify.auth.authmanager.SpotifyTokenManagerImpl
 import mcpserver.spotify.services.playerservice.SpotifyPlayerServiceImpl
+import mcpserver.spotify.services.userservice.SpotifyUserServiceImpl
+import mcpserver.spotify.services.userservice.storage.FileUserProfileStorage
 import mcpserver.spotifymcp.tools.*
 import java.io.File
 
@@ -24,17 +26,22 @@ fun createServer(): Server {
     val tokenManager = SpotifyTokenManagerImpl(
         tokenStorage = FileTokenStorageImpl(File("tokens.json"))
     )
-    val spotifyApi = SpotifyPlayerServiceImpl(tokenManager = tokenManager)
+    val spotifyPlayerApi = SpotifyPlayerServiceImpl(tokenManager = tokenManager)
+    val spotifyUserApi = SpotifyUserServiceImpl(
+        tokenManager = tokenManager,
+        storage = FileUserProfileStorage(File("userprofile.json"))
+    )
 
     // Register tools
-    addSpotifyPlayTool(server, spotifyApi)
-    addSpotifyPausePlaybackTool(server, spotifyApi)
-    addSpotifySearchTool(server, spotifyApi)
-    addSpotifySkipToPrevTool(server, spotifyApi)
-    addSpotifySkipToNextTool(server, spotifyApi)
-    addSpotifySetVolumeTool(server, spotifyApi)
-    addSpotifySeekToPositionTool(server, spotifyApi)
-    addSpotifyGetQueueTool(server, spotifyApi)
-    addSpotifySetRepeatModeTool(server, spotifyApi)
+    addSpotifyPlayTool(server, spotifyPlayerApi)
+    addSpotifyPausePlaybackTool(server, spotifyPlayerApi)
+    addSpotifySearchTool(server, spotifyPlayerApi)
+    addSpotifySkipToPrevTool(server, spotifyPlayerApi)
+    addSpotifySkipToNextTool(server, spotifyPlayerApi)
+    addSpotifySetVolumeTool(server, spotifyPlayerApi)
+    addSpotifySeekToPositionTool(server, spotifyPlayerApi)
+    addSpotifyGetQueueTool(server, spotifyPlayerApi)
+    addSpotifySetRepeatModeTool(server, spotifyPlayerApi)
+    addGetUserProfileTool(server, spotifyUserApi)
     return server
 }
