@@ -13,7 +13,7 @@ import java.io.File
 fun createServer(): Server {
     val info = Implementation(
         "Spotify Kotlin MCP",
-        "1.0.0"
+        "1.0.0",
     )
     val options = ServerOptions(
         capabilities = ServerCapabilities(tools = ServerCapabilities.Tools(true))
@@ -32,6 +32,9 @@ fun createServer(): Server {
     addSpotifySearchTool(server, spotifyApi)
     addSpotifySkipToPrevTool(server, spotifyApi)
     addSpotifySkipToNextTool(server, spotifyApi)
+    addSpotifySetVolumeTool(server, spotifyApi)
+    addSpotifySeekToPositionTool(server, spotifyApi)
+    addSpotifyGetQueueTool(server, spotifyApi)
 
     return server
 }
