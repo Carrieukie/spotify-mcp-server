@@ -5,7 +5,13 @@ import mcpserver.spotify.utils.networkutils.SpotifyResult
 import mcpserver.spotify.utils.networkutils.model.SpotifyApiError
 
 interface SpotifyPlayerService {
-    suspend fun playTrack(trackUris: List<String> = listOf()): SpotifyResult<String, SpotifyApiError>
+    suspend fun playTrack(
+        trackUris: List<String> = listOf(),
+        contextUri: String? = null,
+        offset: Map<String, Any>? = null,
+        positionMs: Int? = null,
+        deviceId: String? = null
+    ): SpotifyResult<String, SpotifyApiError>
     suspend fun pausePlayback(): SpotifyResult<String, SpotifyApiError>
     suspend fun search(
         query: String,

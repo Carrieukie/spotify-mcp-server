@@ -38,13 +38,16 @@ class SpotifyPlayerServiceImplTest {
     }
 
     @Test
-    fun `playTrack should return success when API call succeeds`() {
+    fun `playTrack should return success when API call succeeds with track URIs`() {
         runBlocking {
             // Arrange
             val mockEngine = MockEngine { request ->
                 // Verify request properties
                 assertEquals("Bearer mock-token", request.headers["Authorization"])
-                // The Content-Type header is set in the request body, not in the headers
+
+                // Verify request body contains track URIs
+                val requestBody = request.body.toByteArray().decodeToString()
+                assert(requestBody.contains("\"uris\":[\"spotify:track:123456\"]"))
 
                 // Return a mock response
                 respond(
@@ -66,7 +69,120 @@ class SpotifyPlayerServiceImplTest {
             )
 
             // Act
-            val result = service.playTrack(listOf("spotify:track:123456"))
+            val result = service.playTrack(
+                trackUris = listOf("spotify:track:123456"),
+                contextUri = null,
+                offset = null,
+                positionMs = null,
+                deviceId = null
+            )
+
+            // Assert
+            assertIs<SpotifyResult.Success<String>>(result)
+        }
+    }
+
+    @Test
+    fun `playTrack should return success when API call succeeds with context URI and offset`() {
+        runBlocking {
+            // Arrange
+            val mockEngine = MockEngine { request ->
+                // Verify request properties
+                assertEquals("Bearer mock-token", request.headers["Authorization"])
+
+                // Verify request body contains context_uri and offset
+                val requestBody = request.body.toByteArray().decodeToString()
+                println("[DEBUG_LOG] Request body: $requestBody")
+
+                // Check for context_uri
+                assert(requestBody.contains("\"context_uri\":\"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr\""))
+
+                // Check for offset with position
+                // The format might be different with our data classes, so we'll check for both possible formats
+                val hasOffset = requestBody.contains("\"offset\":{") && 
+                               (requestBody.contains("\"position\":5") || 
+                                requestBody.contains("\"position\": 5"))
+                assert(hasOffset)
+
+                // Check for position_ms
+                assert(requestBody.contains("\"position_ms\":0") || requestBody.contains("\"position_ms\": 0"))
+
+                // Return a mock response
+                respond(
+                    content = "",
+                    status = HttpStatusCode.OK,
+                    headers = headersOf(HttpHeaders.ContentType, "application/json")
+                )
+            }
+
+            val mockClient = HttpClient(mockEngine) {
+                install(ContentNegotiation) {
+                    json()
+                }
+            }
+
+            val service = SpotifyPlayerServiceImpl(
+                tokenManager = successTokenManager,
+                client = mockClient
+            )
+
+            // Act
+            val result = service.playTrack(
+                trackUris = listOf(),
+                contextUri = "spotify:album:5ht7ItJgpBH7W6vJ5BqpPr",
+                offset = mapOf("position" to 5),
+                positionMs = 0,
+                deviceId = null
+            )
+
+            // Assert
+            if (result is SpotifyResult.Failure) {
+                println("[DEBUG_LOG] Failure: ${result.exception}")
+            }
+            assertIs<SpotifyResult.Success<String>>(result)
+        }
+    }
+
+    @Test
+    fun `playTrack should return success when API call succeeds with device ID`() {
+        runBlocking {
+            // Arrange
+            val deviceId = "0d1841b0976bae2a3a310dd74c0f3df354899bc8"
+
+            val mockEngine = MockEngine { request ->
+                // Verify request properties
+                assertEquals("Bearer mock-token", request.headers["Authorization"])
+
+                // Verify device_id is in the URL
+                assert(request.url.toString().contains("device_id=$deviceId"))
+
+                // Return a mock response
+                respond(
+                    content = "",
+                    status = HttpStatusCode.OK,
+                    headers = headersOf(HttpHeaders.ContentType, "application/json")
+                )
+            }
+
+            val mockClient = HttpClient(mockEngine) {
+                install(ContentNegotiation) {
+                    json()
+                }
+            }
+
+            val service = SpotifyPlayerServiceImpl(
+                tokenManager = successTokenManager,
+                client = mockClient
+            )
+
+            // Act
+            val result = service.playTrack(
+                trackUris = listOf("spotify:track:123456"),
+                contextUri = null,
+                offset = null,
+                positionMs = null,
+                deviceId = deviceId
+            )
 
             // Assert
             assertIs<SpotifyResult.Success<String>>(result)
@@ -98,7 +214,13 @@ class SpotifyPlayerServiceImplTest {
             )
 
             // Act
-            val result = service.playTrack(listOf("spotify:track:123456"))
+            val result = service.playTrack(
+                trackUris = listOf("spotify:track:123456"),
+                contextUri = null,
+                offset = null,
+                positionMs = null,
+                deviceId = null
+            )
 
             // Assert
             assertIs<SpotifyResult.Failure<SpotifyApiError>>(result)
@@ -135,7 +257,13 @@ class SpotifyPlayerServiceImplTest {
             )
 
             // Act
-            val result = service.playTrack(listOf("spotify:track:123456"))
+            val result = service.playTrack(
+                trackUris = listOf("spotify:track:123456"),
+                contextUri = null,
+                offset = null,
+                positionMs = null,
+                deviceId = null
+            )
 
             // Assert
             assertIs<SpotifyResult.Failure<SpotifyApiError>>(result)

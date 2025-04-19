@@ -4,6 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.serialization.Serializable
 import mcpserver.spotify.auth.authmanager.SpotifyTokenManager
 import mcpserver.spotify.services.playerservice.model.SpotifySearchResponse
 import mcpserver.spotify.utils.getHttpClient
@@ -12,11 +13,31 @@ import mcpserver.spotify.utils.networkutils.model.SpotifyAccountsError
 import mcpserver.spotify.utils.networkutils.model.SpotifyApiError
 import mcpserver.spotify.utils.networkutils.safeSpotifyApiCall
 
+@Serializable
+data class PlayRequestOffset(
+    val position: Int? = null,
+    val uri: String? = null
+)
+
+@Serializable
+data class PlayRequestBody(
+    val uris: List<String>? = null,
+    val context_uri: String? = null,
+    val offset: PlayRequestOffset? = null,
+    val position_ms: Int? = null
+)
+
 class SpotifyPlayerServiceImpl(
     private val tokenManager: SpotifyTokenManager,
     private val client: HttpClient = getHttpClient(),
 ) : SpotifyPlayerService {
-    override suspend fun playTrack(trackUris: List<String>): SpotifyResult<String, SpotifyApiError> {
+    override suspend fun playTrack(
+        trackUris: List<String>,
+        contextUri: String?,
+        offset: Map<String, Any>?,
+        positionMs: Int?,
+        deviceId: String?
+    ): SpotifyResult<String, SpotifyApiError> {
         when (val accessToken = tokenManager.getValidAccessToken()) {
             is SpotifyResult.Failure<SpotifyAccountsError> -> {
                 val error = SpotifyApiError(
@@ -30,14 +51,36 @@ class SpotifyPlayerServiceImpl(
 
             is SpotifyResult.Success<String> -> {
                 val response = safeSpotifyApiCall<String, SpotifyApiError> {
-                    val endpoint = "https://api.spotify.com/v1/me/player/play"
+                    var endpoint = "https://api.spotify.com/v1/me/player/play"
+
+                    // Add device_id as query parameter if provided
+                    if (deviceId != null) {
+                        endpoint += "?device_id=$deviceId"
+                    }
+
                     client.put(endpoint) {
                         headers {
                             append(HttpHeaders.Authorization, "Bearer ${accessToken.data}")
                             append(HttpHeaders.ContentType, "application/json")
                         }
-                        if (trackUris.isNotEmpty()) {
-                            setBody(mapOf("uris" to trackUris))
+
+                        // Build request body using data classes
+                        val requestBody = PlayRequestBody(
+                            uris = if (trackUris.isNotEmpty()) trackUris else null,
+                            context_uri = contextUri,
+                            offset = if (offset != null) {
+                                // Convert the offset map to a PlayRequestOffset object
+                                val position = offset["position"] as? Int
+                                val uri = offset["uri"] as? String
+                                PlayRequestOffset(position = position, uri = uri)
+                            } else null,
+                            position_ms = positionMs
+                        )
+
+                        // Only set the body if there's something to send
+                        if (requestBody.uris != null || requestBody.context_uri != null || 
+                            requestBody.offset != null || requestBody.position_ms != null) {
+                            setBody(requestBody)
                         }
                     }.body<String>()
                 }
@@ -236,11 +279,3 @@ class SpotifyPlayerServiceImpl(
     }
 
 }
-
-
-
-
-
-
-
-
