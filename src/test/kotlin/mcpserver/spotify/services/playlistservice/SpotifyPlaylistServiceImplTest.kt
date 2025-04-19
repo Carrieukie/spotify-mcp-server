@@ -7,7 +7,7 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.runBlocking
 import mcpserver.spotify.auth.authmanager.SpotifyTokenManager
-import mcpserver.spotify.services.playlistservice.model.PlaylistItem
+import mcpserver.spotify.services.playlistservice.model.SpotifyPlaylistItem
 import mcpserver.spotify.services.playlistservice.model.SpotifyAddTracksRequest
 import mcpserver.spotify.services.playlistservice.model.SpotifyAddTracksResponse
 import mcpserver.spotify.services.playlistservice.model.SpotifyCreatePlaylistRequest
@@ -446,8 +446,8 @@ class SpotifyPlaylistServiceImplTest {
             val result = service.createPlaylist(userId, request)
 
             // Assert
-            assertIs<SpotifyResult.Success<PlaylistItem>>(result)
-            val playlist = (result as SpotifyResult.Success<PlaylistItem>).data
+            assertIs<SpotifyResult.Success<SpotifyPlaylistItem>>(result)
+            val playlist = (result as SpotifyResult.Success<SpotifyPlaylistItem>).data
             assertEquals("New Playlist", playlist.name)
             assertEquals("New playlist description", playlist.description)
             assertEquals(false, playlist.public)

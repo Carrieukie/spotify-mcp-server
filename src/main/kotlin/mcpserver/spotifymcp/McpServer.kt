@@ -29,7 +29,6 @@ fun createServer(): Server {
     )
     val spotifyPlayerApi = SpotifyPlayerServiceImpl(tokenManager = tokenManager)
     val spotifyPlaylistApi = SpotifyPlaylistServiceImpl(tokenManager = tokenManager)
-    val spotifyPlayerApi = SpotifyPlayerServiceImpl(tokenManager = tokenManager)
     val spotifyUserApi = SpotifyUserServiceImpl(
         tokenManager = tokenManager,
         storage = FileUserProfileStorage(File("userprofile.json"))
@@ -46,8 +45,6 @@ fun createServer(): Server {
     addSpotifyGetQueueTool(server, spotifyPlayerApi)
     addSpotifySetRepeatModeTool(server, spotifyPlayerApi)
     addGetUserProfileTool(server, spotifyUserApi)
-    addSpotifyPlayTool(server, spotifyPlayerApi)
-    addSpotifyPausePlaybackTool(server, spotifyPlayerApi)
     addSpotifySearchTool(server, spotifyPlayerApi)
     addSpotifySkipToPrevTool(server, spotifyPlayerApi)
     addSpotifySkipToNextTool(server, spotifyPlayerApi)

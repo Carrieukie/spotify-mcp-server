@@ -1,6 +1,6 @@
 package mcpserver.spotify.services.playlistservice
 
-import mcpserver.spotify.services.playlistservice.model.PlaylistItem
+import mcpserver.spotify.services.playlistservice.model.SpotifyPlaylistItem
 import mcpserver.spotify.services.playlistservice.model.SpotifyAddTracksRequest
 import mcpserver.spotify.services.playlistservice.model.SpotifyAddTracksResponse
 import mcpserver.spotify.services.playlistservice.model.SpotifyCreatePlaylistRequest
@@ -72,5 +72,5 @@ interface SpotifyPlaylistService {
     suspend fun createPlaylist(
         userId: String,
         request: SpotifyCreatePlaylistRequest
-    ): SpotifyResult<PlaylistItem, SpotifyApiError>
+    ): SpotifyResult<SpotifyPlaylistItem, SpotifyApiError>
 }
