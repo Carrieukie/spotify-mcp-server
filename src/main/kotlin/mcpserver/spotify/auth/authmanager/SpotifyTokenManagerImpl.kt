@@ -33,6 +33,7 @@ class SpotifyTokenManagerImpl(
             throw IllegalArgumentException("Spotify Client ID and Secret must be provided.")
         }
     }
+
     override suspend fun getValidAccessToken(): SpotifyResult<String, SpotifyAccountsError> {
         return safeSpotifyApiCall<String, SpotifyAccountsError> {
             val currentToken = tokenStorage.getTokens()?.accessToken
@@ -121,7 +122,10 @@ class SpotifyTokenManagerImpl(
             "user-read-playback-state",
             "user-read-recently-played",
             "user-read-currently-playing",
-            "user-modify-playback-state"
+            "user-modify-playback-state",
+            "playlist-read-private",
+            "playlist-modify-public",
+            "playlist-modify-private"
         ).joinToString(" ")
 
         return URLBuilder("$SPOTIFY_ACCOUNTS_BASE_URL/authorize").apply {

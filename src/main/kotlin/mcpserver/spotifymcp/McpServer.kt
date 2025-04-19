@@ -7,6 +7,7 @@ import io.modelcontextprotocol.kotlin.sdk.server.ServerOptions
 import mcpserver.spotify.auth.tokenstorage.FileTokenStorageImpl
 import mcpserver.spotify.auth.authmanager.SpotifyTokenManagerImpl
 import mcpserver.spotify.services.playerservice.SpotifyPlayerServiceImpl
+import mcpserver.spotify.services.playlistservice.SpotifyPlaylistServiceImpl
 import mcpserver.spotifymcp.tools.*
 import java.io.File
 
@@ -24,17 +25,23 @@ fun createServer(): Server {
     val tokenManager = SpotifyTokenManagerImpl(
         tokenStorage = FileTokenStorageImpl(File("tokens.json"))
     )
-    val spotifyApi = SpotifyPlayerServiceImpl(tokenManager = tokenManager)
+    val spotifyPlayerApi = SpotifyPlayerServiceImpl(tokenManager = tokenManager)
+    val spotifyPlaylistApi = SpotifyPlaylistServiceImpl(tokenManager = tokenManager)
 
     // Register tools
-    addSpotifyPlayTool(server, spotifyApi)
-    addSpotifyPausePlaybackTool(server, spotifyApi)
-    addSpotifySearchTool(server, spotifyApi)
-    addSpotifySkipToPrevTool(server, spotifyApi)
-    addSpotifySkipToNextTool(server, spotifyApi)
-    addSpotifySetVolumeTool(server, spotifyApi)
-    addSpotifySeekToPositionTool(server, spotifyApi)
-    addSpotifyGetQueueTool(server, spotifyApi)
-    addSpotifySetRepeatModeTool(server, spotifyApi)
+    addSpotifyPlayTool(server, spotifyPlayerApi)
+    addSpotifyPausePlaybackTool(server, spotifyPlayerApi)
+    addSpotifySearchTool(server, spotifyPlayerApi)
+    addSpotifySkipToPrevTool(server, spotifyPlayerApi)
+    addSpotifySkipToNextTool(server, spotifyPlayerApi)
+    addSpotifySetVolumeTool(server, spotifyPlayerApi)
+    addSpotifySeekToPositionTool(server, spotifyPlayerApi)
+    addSpotifyGetQueueTool(server, spotifyPlayerApi)
+    addSpotifySetRepeatModeTool(server, spotifyPlayerApi)
+    addSpotifyGetPlaylistsTool(server, spotifyPlaylistApi)
+    addSpotifyGetPlaylistItemsTool(server, spotifyPlaylistApi)
+    addSpotifyRemovePlaylistTracksTool(server, spotifyPlaylistApi)
+    addSpotifyAddPlaylistTracksTool(server, spotifyPlaylistApi)
+    addSpotifyCreatePlaylistTool(server, spotifyPlaylistApi)
     return server
 }
