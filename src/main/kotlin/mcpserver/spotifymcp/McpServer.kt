@@ -24,7 +24,7 @@ fun createServer(): Server {
     val tokenManager = SpotifyTokenManagerImpl(
         tokenStorage = FileTokenStorageImpl(File("tokens.json"))
     )
-    val spotifyApi = SpotifyPlayerServiceImpl(tokenManager =tokenManager)
+    val spotifyApi = SpotifyPlayerServiceImpl(tokenManager = tokenManager)
 
     // Register tools
     addSpotifyPlayTool(server, spotifyApi)
@@ -35,6 +35,6 @@ fun createServer(): Server {
     addSpotifySetVolumeTool(server, spotifyApi)
     addSpotifySeekToPositionTool(server, spotifyApi)
     addSpotifyGetQueueTool(server, spotifyApi)
-
+    addSpotifySetRepeatModeTool(server, spotifyApi)
     return server
 }
