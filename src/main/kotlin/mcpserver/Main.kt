@@ -9,33 +9,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.io.asSink
 import kotlinx.io.asSource
 import kotlinx.io.buffered
-import mcpserver.spotify.auth.authmanager.SpotifyTokenManagerImpl
-import mcpserver.spotify.auth.tokenstorage.FileTokenStorageImpl
-import mcpserver.spotify.services.playerservice.SpotifyPlayerServiceImpl
-import mcpserver.spotify.services.userservice.SpotifyUserServiceImpl
-import mcpserver.spotify.services.userservice.storage.FileUserProfileStorage
 import mcpserver.spotifymcp.createServer
-import java.io.File
 
-// Setup Spotify API
-val tokenManager = SpotifyTokenManagerImpl(
-    tokenStorage = FileTokenStorageImpl(File("tokens.json"))
-)
-val userProfileStorage = FileUserProfileStorage(File("userprofile.json"))
-val spotifyPlayerApi = SpotifyPlayerServiceImpl(tokenManager = tokenManager)
-val spotifyUserApi = SpotifyUserServiceImpl(tokenManager = tokenManager, storage = userProfileStorage)
-
-
-suspend fun main() {
-    runSseMcpServerUsingKtorPlugin(port = 8080)
-//    // Example 1: Play a track
-//    println("Playing tracks...")
-    val playResult = spotifyPlayerApi.playPlaylist(
-
-    )
-
-
-
+fun main() {
 //     Run the MCP server
     runMcpServerUsingStdio()
 //    runSseMcpServerUsingKtorPlugin(8080)

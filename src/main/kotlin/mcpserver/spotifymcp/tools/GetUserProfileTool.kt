@@ -53,14 +53,13 @@ fun addGetUserProfileTool(server: Server, spotifyUserService: SpotifyUserService
                     Display Name: ${profile.displayName ?: "N/A"}
                     User ID: ${profile.userId}
                     Followers: ${profile.followers?.total ?: 0}
-                    Spotify URI: ${profile.uri ?: "N/A"}
                 """.trimIndent()
 
                 CallToolResult(listOf(TextContent(response)))
             }
 
             is SpotifyResult.Failure -> {
-                val errorMessage = result.exception.error?.message ?: "Unknown error"
+                val errorMessage = result.exception
                 CallToolResult(listOf(TextContent("Failed to get user profile: $errorMessage")))
             }
         }

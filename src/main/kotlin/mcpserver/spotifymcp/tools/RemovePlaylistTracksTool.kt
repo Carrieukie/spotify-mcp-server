@@ -69,7 +69,7 @@ fun addSpotifyRemovePlaylistTracksTool(server: Server, spotifyPlaylistService: S
 
         val result = when (val res = spotifyPlaylistService.removePlaylistTracks(playlistId, request)) {
             is SpotifyResult.Failure -> {
-                val errorMessage = "Failed to remove tracks from playlist: ${res.exception.error?.message}"
+                val errorMessage = "Failed to remove tracks from playlist: ${res.exception}"
                 println("Error: $errorMessage")
                 errorMessage
             }

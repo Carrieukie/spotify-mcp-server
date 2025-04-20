@@ -62,7 +62,7 @@ fun addSpotifyGetPlaylistItemsTool(server: Server, spotifyPlaylistService: Spoti
 
         val result = when (val res = spotifyPlaylistService.getPlaylistItems(playlistId, limit, offset)) {
             is SpotifyResult.Failure -> {
-                val errorMessage = "Failed to retrieve playlist items: ${res.exception.error?.message}"
+                val errorMessage = "Failed to retrieve playlist items: ${res.exception}"
                 println("Error: $errorMessage")
                 errorMessage
             }

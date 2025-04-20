@@ -68,7 +68,7 @@ fun addSpotifyAddPlaylistTracksTool(server: Server, spotifyPlaylistService: Spot
 
         val result = when (val res = spotifyPlaylistService.addPlaylistTracks(playlistId, request)) {
             is SpotifyResult.Failure -> {
-                val errorMessage = "Failed to add tracks to playlist: ${res.exception.error?.message}"
+                val errorMessage = "Failed to add tracks to playlist: ${res.exception}"
                 println("Error: $errorMessage")
                 errorMessage
             }

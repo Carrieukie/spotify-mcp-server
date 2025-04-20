@@ -96,7 +96,7 @@ fun addSpotifySearchTool(server: Server, spotifyPlayerService: SpotifyPlayerServ
             includeExternal = includeExternal
         )) {
             is SpotifyResult.Failure -> {
-                val errorMessage = "Something went wrong: ${res.exception.message}"
+                val errorMessage = "Something went wrong: ${res.exception}"
                 println("Error: $errorMessage")
                 errorMessage
             }

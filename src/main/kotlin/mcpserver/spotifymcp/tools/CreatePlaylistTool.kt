@@ -21,7 +21,7 @@ fun addSpotifyCreatePlaylistTool(server: Server, spotifyPlaylistService: Spotify
         Use this tool when the user wants to create a new playlist on Spotify.
         
         Required parameters:
-        - userId: The Spotify user ID for whom to create the playlist
+        - userId: The Spotify user ID for whom to create the playlist ie qetbl2jvi1d4m1usve88jxgcp
         - name: The name for the new playlist
         
         Optional parameters:
@@ -77,7 +77,7 @@ fun addSpotifyCreatePlaylistTool(server: Server, spotifyPlaylistService: Spotify
 
         val result = when (val res = spotifyPlaylistService.createPlaylist(payload.userId, request)) {
             is SpotifyResult.Failure -> {
-                val errorMessage = "Failed to create playlist: ${res.exception.error?.message}"
+                val errorMessage = "Failed to create playlist: ${res.exception}"
                 println("Error: $errorMessage")
                 errorMessage
             }
