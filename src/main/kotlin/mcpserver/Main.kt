@@ -1,6 +1,9 @@
 package mcpserver
 
+import io.ktor.server.cio.*
+import io.ktor.server.engine.*
 import io.modelcontextprotocol.kotlin.sdk.server.StdioServerTransport
+import io.modelcontextprotocol.kotlin.sdk.server.mcp
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
 import kotlinx.io.asSink
@@ -24,29 +27,41 @@ val spotifyUserApi = SpotifyUserServiceImpl(tokenManager = tokenManager, storage
 
 
 suspend fun main() {
+    runSseMcpServerUsingKtorPlugin(port = 8080)
 //    // Example 1: Play a track
 //    println("Playing tracks...")
-//    val playResult = spotifyPlayerApi.playTrack(
-//        listOf(
-//            "spotify:track:3eNZcLsKbLIAFJRKiVrerK",
-//            "spotify:track:0jV229QHtkNuYxC3gFD8Vg"
-//        )
-//    )
-//
+    val playResult = spotifyPlayerApi.playPlaylist(
+
+    )
+
 
 
 //     Run the MCP server
-    runBlocking {
-        val server = createServer()
-        val transport = StdioServerTransport(
-            inputStream = System.`in`.asSource().buffered(),
-            outputStream = System.out.asSink().buffered()
-        )
+    runMcpServerUsingStdio()
+//    runSseMcpServerUsingKtorPlugin(8080)
+}
 
-        val shutdownSignal = CompletableDeferred<Unit>()
-        server.onCloseCallback = { shutdownSignal.complete(Unit) }
+fun runMcpServerUsingStdio() = runBlocking {
+    val server = createServer()
+    val transport = StdioServerTransport(
+        inputStream = System.`in`.asSource().buffered(),
+        outputStream = System.out.asSink().buffered()
+    )
 
-        server.connect(transport)
-        shutdownSignal.await()
-    }
+    val shutdownSignal = CompletableDeferred<Unit>()
+    server.onClose { shutdownSignal.complete(Unit) }
+
+    server.connect(transport)
+    shutdownSignal.await()
+}
+
+fun runSseMcpServerUsingKtorPlugin(port: Int): Unit = runBlocking {
+    println("Starting sse server on port $port")
+    println("Use inspector to connect to the http://localhost:$port/sse")
+
+    embeddedServer(CIO, host = "0.0.0.0", port = port) {
+        mcp {
+            return@mcp createServer()
+        }
+    }.start(wait = true)
 }

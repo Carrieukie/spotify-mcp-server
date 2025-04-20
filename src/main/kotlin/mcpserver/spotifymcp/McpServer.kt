@@ -35,7 +35,6 @@ fun createServer(): Server {
     )
 
     // Register tools
-    addSpotifyPlayTool(server, spotifyPlayerApi)
     addSpotifyPausePlaybackTool(server, spotifyPlayerApi)
     addSpotifySearchTool(server, spotifyPlayerApi)
     addSpotifySkipToPrevTool(server, spotifyPlayerApi)
@@ -44,18 +43,15 @@ fun createServer(): Server {
     addSpotifySeekToPositionTool(server, spotifyPlayerApi)
     addSpotifyGetQueueTool(server, spotifyPlayerApi)
     addSpotifySetRepeatModeTool(server, spotifyPlayerApi)
+    addSpotifyPlayResumeTool(server, spotifyPlayerApi)
+
     addGetUserProfileTool(server, spotifyUserApi)
-    addSpotifySearchTool(server, spotifyPlayerApi)
-    addSpotifySkipToPrevTool(server, spotifyPlayerApi)
-    addSpotifySkipToNextTool(server, spotifyPlayerApi)
-    addSpotifySetVolumeTool(server, spotifyPlayerApi)
-    addSpotifySeekToPositionTool(server, spotifyPlayerApi)
-    addSpotifyGetQueueTool(server, spotifyPlayerApi)
-    addSpotifySetRepeatModeTool(server, spotifyPlayerApi)
+
     addSpotifyGetPlaylistsTool(server, spotifyPlaylistApi)
     addSpotifyGetPlaylistItemsTool(server, spotifyPlaylistApi)
     addSpotifyRemovePlaylistTracksTool(server, spotifyPlaylistApi)
     addSpotifyAddPlaylistTracksTool(server, spotifyPlaylistApi)
     addSpotifyCreatePlaylistTool(server, spotifyPlaylistApi)
+
     return server
 }

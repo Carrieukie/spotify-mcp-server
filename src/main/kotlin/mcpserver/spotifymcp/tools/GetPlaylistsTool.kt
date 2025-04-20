@@ -43,7 +43,7 @@ fun addSpotifyGetPlaylistsTool(server: Server, spotifyPlaylistService: SpotifyPl
     )
 
     server.addTool(
-        name = "get-playlists-spotify",
+        name = "get-my-playlists-spotify",
         description = toolDescription,
         inputSchema = inputSchema
     ) { input ->

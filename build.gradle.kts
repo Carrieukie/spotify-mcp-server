@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.modelcontextprotocol:kotlin-sdk:0.3.0")
+    implementation("io.modelcontextprotocol:kotlin-sdk:0.4.0")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
@@ -30,8 +30,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.14")
 
     testImplementation(kotlin("test"))
-    testImplementation("io.mockk:mockk:1.14.0")
     testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 }
 
 tasks.test {
