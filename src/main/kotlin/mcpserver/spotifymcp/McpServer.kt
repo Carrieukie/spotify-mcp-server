@@ -43,7 +43,10 @@ fun createServer(): Server {
     addSpotifySeekToPositionTool(server, spotifyPlayerApi)
     addSpotifyGetQueueTool(server, spotifyPlayerApi)
     addSpotifySetRepeatModeTool(server, spotifyPlayerApi)
-    addSpotifyPlayResumeTool(server, spotifyPlayerApi)
+//    addSpotifyPlayResumeTool(server, spotifyPlayerApi)
+    addPlaySpotifyPlaylist(server, spotifyPlayerApi)
+    addPlaySpotifyTrack(server, spotifyPlayerApi)
+    addResumeSpotifyPlayBack(server, spotifyPlayerApi)
 
     addGetUserProfileTool(server, spotifyUserApi)
 
