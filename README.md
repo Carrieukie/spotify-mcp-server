@@ -66,7 +66,7 @@ The server can be run in two modes:
 
    **Connecting with VS Code's Copilot**:
    VS Code's Copilot has a built-in MCP client that can connect to the server when running in Standard I/O mode. You can
-   use other mcp clients but it is the easiest that I found to use. To use it:
+   use other mcp clients like claude desktop but Code's Copilot is the easiest that I found to use. To use it:
 
 
 2. Configure VS Code to connect to the MCP server:
@@ -93,7 +93,7 @@ The server can be run in two modes:
    }
    ```
 
-3. In VS Code, open the Copilot chat panel
+3. In VS Code, open the Copilot chat panel and pick Agent Mode.
 4. Copilot will automatically detect and connect to the MCP server
 5. You can now interact with the Spotify tools through the Copilot interface
 
